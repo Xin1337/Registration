@@ -41,7 +41,7 @@ public class Registration extends OOP {
                     String course = scanner.next();
                     System.out.println("Enter the student year: ");
                     String year = scanner.next();
-                    if (students.stream().anyMatch(student -> student.getNames().equalsIgnoreCase(name))) { // Thank you Denom for this line of code!
+                    if (students.parallelStream().anyMatch(student -> student.getNames().equalsIgnoreCase(name))) { // Thank you Denom for this line of code!
                         System.out.println("Student already exists!");
                         break;
                     } else {
@@ -61,15 +61,11 @@ public class Registration extends OOP {
                 case 3:
                     System.out.println("Enter the student name: ");
                     String found = scanner.next();
-                    for (Registration student : students) {
-                        if (student.getNames().equals(found)) {
-                            students.remove(student);
-                            System.out.printf("%s has been removed from the system!\n", found);
-                            break;
-                        } else {
-                            System.out.println("Student not found!");
-                            break;
-                        }
+                    if (students.parallelStream().anyMatch(student -> student.getNames().equalsIgnoreCase(found))) {
+                        students.removeIf(student -> student.getNames().equalsIgnoreCase(found));
+                        System.out.printf("%s has been removed from the system!\n", found);
+                    } else {
+                        System.out.println("Student not found!");
                     }
                     break;
                 case 4:
