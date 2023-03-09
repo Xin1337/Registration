@@ -20,7 +20,7 @@ public class Registration extends OOP {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         scanner.useDelimiter("\n");
-        LinkedList<Registration> students = new LinkedList<>();
+        LinkedList<Registration> students = new LinkedList<Registration>();
 
         while (true) {
             System.out.println("Welcome to the registration system!");
@@ -41,14 +41,14 @@ public class Registration extends OOP {
                     String course = scanner.next();
                     System.out.println("Enter the student year: ");
                     String year = scanner.next();
-                    if (students.contains(name)) {
+                    if (students.stream().anyMatch(student -> student.getNames().equalsIgnoreCase(name))) { // Thank you Denom for this line of code!
                         System.out.println("Student already exists!");
                         break;
                     } else {
-                        students.add(students.size(), new Registration(age, name, course, year));
-                        System.out.println("Student added!");
+                        students.add(new Registration(age, name, course, year));
+                        System.out.printf("%s has been added to the system!\n", name);
+                        break;
                     }
-                    break;
                 case 2:
                     if (students.size() == 0) {
                         System.out.println("No students in the system!");
@@ -74,6 +74,7 @@ public class Registration extends OOP {
                     break;
                 case 4:
                     System.out.println("Exiting...");
+                    System.exit(0);
                     break;
                 default:
                     System.out.println("Invalid choice!");
