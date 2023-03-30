@@ -1,27 +1,58 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Scanner;
 import java.util.LinkedList;
 import java.io.FileWriter;
 import java.io.IOException;
 
 /**
- * @author Dominic
+ * @author Nixheh
  * @version 1.0
  * @since 2023-03-09
  * @see OOP
  * @see LinkedList
  * @see Scanner
  * @see System
- * Total hours spent on this project: 3 hours
+ * Total hours spent on this project: 7 hours
  * Ayoko na mag IT
  * Patya nalang ko
  * Description: This program is a registration system that allows the user to add, view and remove students from the system.
  */
 
 public class Registration {
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         scanner.useDelimiter("\n"); // Used Delimiter to prevent the scanner from skipping the next line.
         LinkedList<OOP> students = new LinkedList<>(); // Used LinkedList to store the students.
+
+        try {
+            // Load the students from the file
+            BufferedReader reader = new BufferedReader(new FileReader("src/students.txt"));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] student = line.split(","); // Splits the line into an array
+                // Add the student to the LinkedList
+                students.add(new OOP(Integer.parseInt(student[1]), student[0], student[2], Integer.parseInt(student[3]), student[4], student[5], student[6]));
+            }
+            reader.close();
+        } catch (Exception e) {
+            System.out.println("Error loading students!");
+        }
+        // Saves the students LinkedList to the file when the program exits
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            try {
+                FileWriter writer = new FileWriter("src/students.txt");
+                for (OOP student : students) {
+                    writer.write(String.format("%s,%s,%s,%s,%s,%s,%s %n", student.getName(), student.getAge(), student.getGender(), student.getContactNumber(), student.getAddress(), student.getCourse(), student.getYear()));
+                }
+                writer.close();
+            } catch (IOException e) {
+                System.out.println("Error saving students!");
+            }
+        }));
 
         // Main loop
         while (true) {
@@ -89,17 +120,6 @@ public class Registration {
                 default:
                     System.out.println("Invalid choice!");
                     break;
-            }
-
-            try {
-                FileWriter fileWriter = new FileWriter("src/students.txt");
-                for (OOP student : students) {
-                    String data = student.getName() + "," + student.getAge() + "," + student.getGender() + "," + student.getContactNumber() + "," + student.getAddress() + "," + student.getCourse() + "," + student.getYear() + "," + "\n";
-                    fileWriter.write(data);
-                }
-                fileWriter.close();
-            } catch (IOException e) {
-                e.printStackTrace();
             }
         }
     }
