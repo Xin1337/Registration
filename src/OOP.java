@@ -1,12 +1,7 @@
 public class OOP {
     // Variables
-    private int age;
-    private String names;
-    private String gender;
-    private int contactNumber;
-    private String address;
-    private String course;
-    private String year;
+    private String names, gender, address, course, year;
+    private int age, contactNumber;
 
     // Constructor for the OOP class
     public OOP(int age, String names, String gender, int contactNumber, String address, String course, String year) {

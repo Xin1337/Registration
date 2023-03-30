@@ -1,5 +1,7 @@
 import java.util.Scanner;
 import java.util.LinkedList;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  * @author Dominic
@@ -15,15 +17,11 @@ import java.util.LinkedList;
  * Description: This program is a registration system that allows the user to add, view and remove students from the system.
  */
 
-public class Registration extends OOP {
-    // This constructor inherits the variables from the OOP class
-    public Registration(int age, String names, String gender, int contactNumber, String address, String course, String year) {
-        super(age, names, gender, contactNumber, address, course, year);
-    }
+public class Registration {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         scanner.useDelimiter("\n"); // Used Delimiter to prevent the scanner from skipping the next line.
-        LinkedList<Registration> students = new LinkedList<>(); // Used LinkedList to store the students.
+        LinkedList<OOP> students = new LinkedList<>(); // Used LinkedList to store the students.
 
         // Main loop
         while (true) {
@@ -57,17 +55,17 @@ public class Registration extends OOP {
                         System.out.println("Student already exists!");
                     } else {
                         // Add the student to the LinkedList
-                        students.add(new Registration(age, name, gender, contactNumber, address, course, year));
+                        students.add(new OOP(age, name, gender, contactNumber, address, course, year));
                         System.out.printf("%s has been added to the system!\n", name);
                     }
                     break;
                 case 2:
                     // Check if the LinkedList is empty
                     if (students.size() == 0) {
-                        System.out.println("No students in the system!");
+                        System.out.println("No student in the system!");
                     } else {
                         // Print out the students
-                        for (Registration student : students) { //Goes through the LinkedList and prints out the students
+                        for (OOP student : students) { //Goes through the LinkedList and prints out the students
                             System.out.printf("Name: %s, Age: %s, Gender: %s, Contact Number: %s, Address: %s, Course: %s, Year: %s\n", student.getName(), student.getAge(), student.getGender(), student.getContactNumber(), student.getAddress(), student.getCourse(), student.getYear());
                         }
                     }
@@ -91,6 +89,17 @@ public class Registration extends OOP {
                 default:
                     System.out.println("Invalid choice!");
                     break;
+            }
+
+            try {
+                FileWriter fileWriter = new FileWriter("src/students.txt");
+                for (OOP student : students) {
+                    String data = student.getName() + "," + student.getAge() + "," + student.getGender() + "," + student.getContactNumber() + "," + student.getAddress() + "," + student.getCourse() + "," + student.getYear() + "," + "\n";
+                    fileWriter.write(data);
+                }
+                fileWriter.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }
