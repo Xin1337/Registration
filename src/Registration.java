@@ -14,15 +14,13 @@ import java.io.IOException; // Used to catch the IOException
  * @see Scanner
  * @see System
  * Total hours spent on this project: 7 hours
- * Ayoko na mag IT
- * Patya nalang ko
  * Description: This program is a registration system that allows the user to add, view and remove students from the system.
  */
 
 public class Registration {
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in); // Used Scanner to get user input
         scanner.useDelimiter("\n"); // Used Delimiter to prevent the scanner from skipping the next line.
         LinkedList<OOP> students = new LinkedList<>(); // Used LinkedList to store the students.
 
@@ -33,6 +31,8 @@ public class Registration {
             while ((line = bufferedReader.readLine()) != null) { // Goes through the file and adds the students to the LinkedList
                 String[] student = line.split(","); // Splits the line into an array
                 // Add the student to the LinkedList
+                // Used Integer.parseInt() to convert the String to an int
+                // 1 is first since on the notepad name is first and then age
                 students.add(new OOP(Integer.parseInt(student[1]), student[0], student[2], Integer.parseInt(student[3]), student[4], student[5], student[6]));
             }
             // Save the students to the file when the program exits
@@ -81,6 +81,7 @@ public class Registration {
                     String year = scanner.next();
 
                     // Check if the student already exists
+                    // Used parallelStream() since it is faster than the normal stream()
                     if (students.parallelStream().anyMatch(student -> student.getName().equalsIgnoreCase(name))) { // Thank you Denom for this line of code!
                         System.out.println("Student already exists!");
                     } else {
@@ -101,9 +102,10 @@ public class Registration {
                     }
                     break;
                 case 3:
-                    System.out.println("Enter the student name: ");
-                    String found = scanner.next(); // Gets the student name
+                    System.out.println("Enter the student name: "); // Prints out the prompt
+                    String found = scanner.next(); // Stores the student name
                     // Check if the student exists
+                    // Used parallelStream() since it is faster than the normal stream()
                     if (students.parallelStream().anyMatch(student -> student.getName().equalsIgnoreCase(found))) { // Thank you Denom for this line of code!
                         students.removeIf(student -> student.getName().equalsIgnoreCase(found)); //Removes the student from the LinkedList
                         System.out.printf("%s has been removed from the system!\n", found); // Prints out the student that has been removed
